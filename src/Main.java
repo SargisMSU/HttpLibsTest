@@ -1,4 +1,4 @@
-import com.squareup.okhttp.OkHttpClient;
+import retrofit.WeatherRestAdapter;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        /** HttpURLConnection test **/
         /*URLConnection urlConnection =
                 new URLConnection("https://github.com/SargisMSU", "GET", null);
         int code = urlConnection.sendRequest();
@@ -17,6 +18,7 @@ public class Main {
             System.out.println("urlConnection.getRedirectURL() = " + urlConnection.getRedirectURL());
         }*/
 
+        /** okhttp test **/
         /*String url = "https://reqres.in/api/users/2";
         String postUrl = "https://reqres.in/api/users/";
         String postBody = "{\n" +
@@ -28,7 +30,9 @@ public class Main {
         System.out.println(OkHttpTest.getRequest(client, url));
         OkHttpTest.postRequest(client, postUrl, postBody);*/
 
+        /** retrofit test **/
 
+        System.out.println(new WeatherRestAdapter().testWeatherApiSync("Yerevan"));
 
     }
 }

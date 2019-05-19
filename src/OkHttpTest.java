@@ -1,4 +1,8 @@
-import com.squareup.okhttp.*;
+/**
+ * com.squareup.okhttp:okhttp:2.7.0
+ * */
+
+import okhttp3.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,16 +19,16 @@ public class OkHttpTest {
                 .url(postUrl)
                 .post(body)
                 .build();
-        client.newCall(request).enqueue(new Callback() {    // Asynchronous
+        client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Request request, IOException e) {
+            public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
             }
 
             @Override
-            public void onResponse(Response response) throws IOException {
+            public void onResponse(Call call, Response response) throws IOException {
                 System.out.println(response.body().string());
-            }
+            }    // Asynchronous
         });
         //client.newCall(request).execute();            Synchronous
     }
@@ -45,26 +49,23 @@ public class OkHttpTest {
     }
 
     public static OkHttpClient buildClient(int timeOut, String userName, String password){
-        OkHttpClient client = new OkHttpClient();
-        client.setWriteTimeout(timeOut, TimeUnit.SECONDS);
-        client.setReadTimeout(timeOut, TimeUnit.SECONDS);
-        client.setConnectTimeout(timeOut, TimeUnit.SECONDS);
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().
+                readTimeout(timeOut, TimeUnit.SECONDS)
+                .writeTimeout(timeOut, TimeUnit.SECONDS)
+                .connectTimeout(timeOut, TimeUnit.SECONDS);
         int cacheSize = 10 * 1024 * 1024; // 10 MB
         Cache cache = new Cache(new File("cacheFileName"), cacheSize);
-        client.setAuthenticator(new Authenticator(){
+        clientBuilder.cache(cache);
+        clientBuilder.authenticator(new Authenticator(){
             @Override
-            public Request authenticate(Proxy proxy, Response response) throws IOException {
+            public Request authenticate(Route route, Response response) throws IOException {
                 String credentials = Credentials.basic(userName, password);
                 return response.request().newBuilder()
                         .header("Authorization", credentials)
                         .build();
             }
-            @Override
-            public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
-                return null;
-            }
         });
-        return client;
+        return clientBuilder.build();
     }
 }
 
