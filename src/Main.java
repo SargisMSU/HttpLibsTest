@@ -17,7 +17,7 @@ public class Main {
             System.out.println("urlConnection.getRedirectURL() = " + urlConnection.getRedirectURL());
         }*/
 
-        String url = "https://reqres.in/api/users/2";
+        /*String url = "https://reqres.in/api/users/2";
         String postUrl = "https://reqres.in/api/users/";
         String postBody = "{\n" +
                 "    \"name\": \"Sargis\",\n" +
@@ -26,7 +26,9 @@ public class Main {
 
         OkHttpClient client = OkHttpTest.buildClient(10, "", "");
         System.out.println(OkHttpTest.getRequest(client, url));
-        OkHttpTest.postRequest(client, postUrl, postBody);
+        OkHttpTest.postRequest(client, postUrl, postBody);*/
+
+
 
     }
 }

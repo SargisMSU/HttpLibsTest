@@ -1,4 +1,6 @@
 import com.squareup.okhttp.*;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
@@ -13,7 +15,7 @@ public class OkHttpTest {
                 .url(postUrl)
                 .post(body)
                 .build();
-        client.newCall(request).enqueue(new Callback() {
+        client.newCall(request).enqueue(new Callback() {    // Asynchronous
             @Override
             public void onFailure(Request request, IOException e) {
                 e.printStackTrace();
@@ -24,6 +26,7 @@ public class OkHttpTest {
                 System.out.println(response.body().string());
             }
         });
+        //client.newCall(request).execute();            Synchronous
     }
 
 
@@ -46,6 +49,8 @@ public class OkHttpTest {
         client.setWriteTimeout(timeOut, TimeUnit.SECONDS);
         client.setReadTimeout(timeOut, TimeUnit.SECONDS);
         client.setConnectTimeout(timeOut, TimeUnit.SECONDS);
+        int cacheSize = 10 * 1024 * 1024; // 10 MB
+        Cache cache = new Cache(new File("cacheFileName"), cacheSize);
         client.setAuthenticator(new Authenticator(){
             @Override
             public Request authenticate(Proxy proxy, Response response) throws IOException {
