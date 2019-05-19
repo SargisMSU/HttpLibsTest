@@ -15,9 +15,11 @@ public class URLConnection {
     private String redirectURL;
     private HttpURLConnection urlConnection;
     private String content;
+    private String method;
 
-    public URLConnection(String url, Map<String, String> headers) throws MalformedURLException {
+    public URLConnection(String url, String method, Map<String, String> headers) throws MalformedURLException {
         this.url = new URL(url);
+        this.method = method;
         this.headers = headers == null ? new HashMap<>() : headers;
     }
 
@@ -25,7 +27,7 @@ public class URLConnection {
         int responseCode = 0;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestMethod(method);
             urlConnection.setConnectTimeout(5000);
             urlConnection.setReadTimeout(5000);
             urlConnection.setInstanceFollowRedirects(true);
